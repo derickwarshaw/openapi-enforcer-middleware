@@ -170,6 +170,16 @@ describe('openapi-enforcer-middleware', () => {
     })
   })
 
+  describe('invalid request', () => {
+    it('shows detailed error message for invalid request', async () => {
+      const definition = helper.definition.v3()
+      const enforcer = Enforcer(definition)
+      const { res } = await helper.request(enforcer, { uri: '/?a=1'})
+      expect(res.body).to.match(/asdf/)
+      expect(res.statusCode).to.equal(400)
+    })
+  })
+
   describe('run controllers', () => {
     it('thrown middleware errors are passed to existing internal error middleware', async () => {
       let handledError = false
